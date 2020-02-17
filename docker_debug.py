@@ -27,7 +27,7 @@ def set_os(os_name):
         docker_shell = pwnlib.tubes.ssh.ssh('root', ip, password='')
     docker_shell.cwd = '/binary'
 
-def attach(target, exe, gdbscript='', host=None, port=None):
+def attach(target, gdbscript='', host=None, port=None):
     host = docker_shell.host
     port = 50818
     gdbscript = 'target extended-remote {}:{}\nattach {}\n{}'.format(host, port, target.pid, gdbscript)
@@ -35,6 +35,6 @@ def attach(target, exe, gdbscript='', host=None, port=None):
     gdbscript = 'shell rm {}\n{}'.format(tmp.name, gdbscript)
     tmp.write(gdbscript)
     tmp.close()
-    cmd = 'gdb -q  "{}" -x "{}"'.format(exe, tmp.name)
+    cmd = 'gdb -q -x "{}"'.format(tmp.name)
     pwnlib.util.misc.run_in_new_terminal(cmd)
 
