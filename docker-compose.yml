@@ -1,0 +1,65 @@
+version: '3.7'
+services:
+    pwn-ubuntu-1604:
+        container_name: pwn-environment-ubuntu-1604
+        restart: always
+        image: pwn-environment:ubuntu-1604
+        init: true
+        build:
+            context: ./dockerfiles
+            dockerfile: dockerfile-ubuntu1604
+        volumes:
+            - ./binary:/binary
+        entrypoint:
+            - /bin/bash
+            - -c
+            - /usr/sbin/sshd && gdbserver --multi 0.0.0.0:50818
+        cap_add:
+            - sys_ptrace
+        expose:
+            - 22
+            - 50818
+
+    pwn-ubuntu-1804:
+        container_name: pwn-environment-ubuntu-1804
+        restart: always
+        image: pwn-environment:ubuntu-1804
+        init: true
+        build:
+            context: ./dockerfiles
+            dockerfile: dockerfile-ubuntu1804
+        volumes:
+            - ./binary:/binary
+        entrypoint:
+            - /bin/bash
+            - -c
+            - /usr/sbin/sshd && gdbserver --multi 0.0.0.0:50818
+        cap_add:
+            - sys_ptrace
+        expose:
+            - 22
+            - 50818
+
+    pwn-ubuntu-1704:
+        container_name: pwn-environment-ubuntu-1704
+        restart: always
+        image: pwn-environment:ubuntu-1704
+        init: true
+        build:
+            context: ./dockerfiles
+            dockerfile: dockerfile-ubuntu1704
+        volumes:
+            - ./binary:/binary
+        entrypoint:
+            - /bin/bash
+            - -c
+            - /usr/sbin/sshd && gdbserver --multi 0.0.0.0:50818
+        cap_add:
+            - sys_ptrace
+        expose:
+            - 22
+            - 50818
+
+networks:
+    default:
+        name: pwn-environment
