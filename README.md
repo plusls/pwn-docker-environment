@@ -31,7 +31,7 @@ The docker image will take up very little space.
 3. Install requirements:
 
    ```bash
-   pip3 install docker pwntools --user
+   pip3 install docker pwntools asyncssh --user
    ```
 
 4. Install pwn-docker-environment.
