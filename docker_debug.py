@@ -7,6 +7,7 @@ import os
 import threading
 import asyncio, asyncssh
 from pwn import log
+import time
 
 event_loop = asyncio.new_event_loop()
 
@@ -31,10 +32,12 @@ class DockerDebug():
         self.remote_host = None
         self.gdbserver_port = 50818
         self.ssh_port = 22
+        self.docker_ip = None
         self.__unix_listener = None
         self.__ssh_listener = None
         self.__gdbserver_listener = None
 
+        container_name = 'pwn-environment-{}'.format(os_name)
 
         if remote_host is not None:
             if isinstance(remote_host, str):
@@ -42,20 +45,23 @@ class DockerDebug():
                 docker_client = docker.DockerClient(base_url='unix:{}/remote_docker.sock'.format(os.getenv('HOME')))
             else:
                 raise TypeError('remote_host must be str')
+            # if using remote docker, start port forwarding
+            ip = '127.0.0.1'
+            log.info("Wait port forwarding from {}...".format(self.remote_host))
+            task = asyncio.run_coroutine_threadsafe(self.__ssh_forward(self.remote_host), event_loop)
+            while self.__unix_listener is None:
+                pass
+            self.docker_ip = docker_client.api.inspect_container(container_name)['NetworkSettings']['Networks']['pwn-environment']['IPAddress']
+            docker_client.close()
+            self.__unix_listener.close()
+            asyncio.run_coroutine_threadsafe(asyncio.sleep(0), event_loop)
+            while self.__gdbserver_listener is None or self.ssh_port == 22:
+                pass
+            
         else:
             docker_client = docker.from_env()
-
-        container_name = 'pwn-environment-{}'.format(os_name)
-        ip = docker_client.api.inspect_container(container_name)['NetworkSettings']['Networks']['pwn-environment']['IPAddress']
-
-
-        # if using remote docker, start port forwarding
-        if self.remote_host is not None:
-            ip = '127.0.0.1'
-            log.info("Wait port forwarding...")
-            task = asyncio.run_coroutine_threadsafe(self.__ssh_forward(remote_host, ip), event_loop)
-            while self.__gdbserver_listener is None:
-                pass
+            ip = docker_client.api.inspect_container(container_name)['NetworkSettings']['Networks']['pwn-environment']['IPAddress']
+            docker_client.close()
 
         try:
             self.docker_shell = pwnlib.tubes.ssh.ssh('root', ip, self.ssh_port, password='')
@@ -69,7 +75,6 @@ class DockerDebug():
         if self.docker_shell is not None:
             self.docker_shell.close()
         if self.remote_host is not None:
-            self.__unix_listener.close()
             self.__ssh_listener.close()
             self.__gdbserver_listener.close()
             asyncio.run_coroutine_threadsafe(asyncio.sleep(0), event_loop)
@@ -90,21 +95,23 @@ class DockerDebug():
         pwnlib.util.misc.run_in_new_terminal(cmd)
 
 
-    async def __ssh_forward(self, host, docker_ip):
+    async def __ssh_forward(self, host):
         async with asyncssh.connect(host) as conn:
             self.__unix_listener = await conn.forward_local_path(os.getenv('HOME') + '/remote_docker.sock', '/var/run/docker.sock')
-            self.__ssh_listener = await conn.forward_local_port('localhost', 0, docker_ip, 22)
-            self.__gdbserver_listener = await conn.forward_local_port('localhost', 0, docker_ip, 50818)
+            await self.__unix_listener.wait_closed()
+            self.__ssh_listener = await conn.forward_local_port('localhost', 0, self.docker_ip, 22)
+            self.__gdbserver_listener = await conn.forward_local_port('localhost', 0, self.docker_ip, 50818)
+
+            print(self.docker_ip)
 
             ssh_port = self.__ssh_listener.get_port()
-            log.info("ssh: {}:{} -> localhost:{}".format(docker_ip, self.ssh_port, ssh_port))
+            log.info("ssh: {}:{} -> localhost:{}".format(self.docker_ip, self.ssh_port, ssh_port))
             self.ssh_port = ssh_port
 
             gdbserver_port = self.__gdbserver_listener.get_port()
-            log.info("gdbserver: {}:{} -> localhost:{}".format(docker_ip, self.gdbserver_port, gdbserver_port))
+            log.info("gdbserver: {}:{} -> localhost:{}".format(self.docker_ip, self.gdbserver_port, gdbserver_port))
             self.gdbserver_port = gdbserver_port
 
-            await self.__unix_listener.wait_closed()
             await self.__ssh_listener.wait_closed()
             await self.__gdbserver_listener.wait_closed()
 

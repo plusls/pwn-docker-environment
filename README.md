@@ -24,6 +24,8 @@ The docker image will take up very little space.
 
 ## Quick Start
 
+### Linux
+
 1. Install docker and docker-compose pwndbg
 
 2. Add your user to docker group.
@@ -42,9 +44,7 @@ The docker image will take up very little space.
    docker-compose up -d
    ```
 
-5. Run test script:
-
-   test.py use tmux as terminal, you can change it to your terminal。
+5. Use Public Key Authentication with SSH
 
    ```bash
    cd binary
@@ -52,5 +52,51 @@ The docker image will take up very little space.
    ```
    ![3.png](readme/3.png)
 
+### WSL1 or local machine that cannot run docker
 
+It also can be used to connect server's docker, but the debugging experience is not good.
+
+#### In server:
+
+1. Install docker and docker-compose
+
+2. Add your user to docker group.
+
+3. Install pwn-docker-environment.
+
+   ```bash
+   git clone https://github.com/plusls/pwn-docker-environment.git
+   cd pwn-docker-environment
+   docker-compose up -d
+   ```
+
+4. Use Public Key Authentication with SSH (Login without password)
+
+#### In WSL1
+
+1. Install  pwndbg
+
+2. Add your user to docker group.
+
+3. Install requirements:
+
+   ```bash
+   pip3 install docker pwntools asyncssh --user
+   ```
+
+4. Install pwn-docker-environment.
+
+   ```bash
+   git clone https://github.com/plusls/pwn-docker-environment.git
+   cd pwn-docker-environment
+   ```
+
+5. Run test script
+
+   ```bash
+   cd binary
+   python3 wsltest.py
+   ```
+
+   ![4.png](readme/4.png)
 
