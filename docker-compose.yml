@@ -62,4 +62,7 @@ services:
 
 networks:
     default:
+        driver: bridge
         name: pwn-environment
+        driver_opts:
+            com.docker.network.bridge.name: pwn-environment
