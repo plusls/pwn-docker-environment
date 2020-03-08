@@ -102,7 +102,11 @@ It also can be used to connect server's docker, but the debugging experience is 
 
 ### Tips
 
-1. Can copy `docker_debug.py` to `~/.local/lib/{python_version}/site-packages`
+1. Can link `docker_debug.py` to `~/.local/lib/{python_version}/site-packages/docker_debug.py`
+
+   ```bash
+   ln -s ~/docker/pwn-docker-environment/docker_debug.py ./
+   ```
 
 2. Can add `cp-pwn` script to `~/.local/bin` to quick copy binary to docker
 

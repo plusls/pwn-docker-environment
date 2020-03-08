@@ -80,8 +80,8 @@ class DockerDebug():
             asyncio.run_coroutine_threadsafe(asyncio.sleep(0), event_loop)
 
 
-    def process(self, *args, **kwargs):
-        return self.docker_shell.process(*args, **kwargs)
+    def process(self, *args, setuid=False,**kwargs):
+        return self.docker_shell.process(*args, setuid=setuid, **kwargs)
 
 
     def attach(self, target, gdbscript=''):
