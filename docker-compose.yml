@@ -13,7 +13,7 @@ services:
         entrypoint:
             - /bin/bash
             - -c
-            - /usr/sbin/sshd && gdbserver --multi 0.0.0.0:50818
+            - /usr/sbin/sshd && /binary/gdbserver --multi 0.0.0.0:50818
         cap_add:
             - sys_ptrace
         security_opt:
@@ -35,7 +35,7 @@ services:
         entrypoint:
             - /bin/bash
             - -c
-            - /usr/sbin/sshd && gdbserver --multi 0.0.0.0:50818
+            - /usr/sbin/sshd && /binary/gdbserver --multi 0.0.0.0:50818
         cap_add:
             - sys_ptrace
         security_opt:
@@ -57,7 +57,7 @@ services:
         entrypoint:
             - /bin/bash
             - -c
-            - /usr/sbin/sshd && gdbserver --multi 0.0.0.0:50818
+            - /usr/sbin/sshd && /binary/gdbserver --multi 0.0.0.0:50818
         cap_add:
             - sys_ptrace
         security_opt:
