@@ -44,7 +44,7 @@ The docker image will take up very little space.
    docker-compose up -d
    ```
 
-5. Use Public Key Authentication with SSH
+5. Run test script
 
    ```bash
    cd binary
@@ -100,3 +100,22 @@ It also can be used to connect server's docker, but the debugging experience is 
 
    ![4.png](readme/4.png)
 
+### Tips
+
+1. Can copy `docker_debug.py` to `~/.local/lib/{python_version}/site-packages`
+
+2. Can add `cp-pwn` script to `~/.local/bin` to quick copy binary to docker
+
+   example:
+
+   ```bash
+   #!/bin/bash
+   cp -r $1 ~/docker/pwn-docker-environment/binary/.
+   ```
+
+   You can use it like this:
+
+   ```bash
+   cp-pwn ./mybinary
+   ```
+   
