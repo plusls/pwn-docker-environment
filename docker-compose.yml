@@ -16,6 +16,8 @@ services:
             - /usr/sbin/sshd && gdbserver --multi 0.0.0.0:50818
         cap_add:
             - sys_ptrace
+        security_opt:
+            - seccomp="enable-personality.json"
         expose:
             - 22
             - 50818
@@ -36,6 +38,8 @@ services:
             - /usr/sbin/sshd && gdbserver --multi 0.0.0.0:50818
         cap_add:
             - sys_ptrace
+        security_opt:
+            - seccomp="enable-personality.json"
         expose:
             - 22
             - 50818
@@ -56,6 +60,8 @@ services:
             - /usr/sbin/sshd && gdbserver --multi 0.0.0.0:50818
         cap_add:
             - sys_ptrace
+        security_opt:
+            - seccomp="enable-personality.json"
         expose:
             - 22
             - 50818
