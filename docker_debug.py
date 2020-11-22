@@ -85,8 +85,12 @@ class DockerDebug():
 
 
     def attach(self, target, gdbscript=''):
+        if type(target) == int:
+            pid = target
+        else:
+            pid = target.pid
         host = self.docker_shell.host
-        gdbscript = 'target extended-remote {}:{}\nattach {}\n{}'.format(host, self.gdbserver_port, target.pid, gdbscript)
+        gdbscript = 'target extended-remote {}:{}\nattach {}\n{}'.format(host, self.gdbserver_port, pid, gdbscript)
         tmp = tempfile.NamedTemporaryFile(prefix = 'pwn', suffix = '.gdb',delete = False, mode = 'w+')
         gdbscript = 'shell rm {}\n{}'.format(tmp.name, gdbscript)
         tmp.write(gdbscript)

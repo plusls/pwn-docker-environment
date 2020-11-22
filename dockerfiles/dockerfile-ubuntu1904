@@ -1,0 +1,12 @@
+FROM ubuntu:19.04
+RUN sed -i "s/http:\/\/archive.ubuntu.com/http:\/\/mirrors.ustc.edu.cn\/ubuntu-old-releases/g" /etc/apt/sources.list && \
+    sed -i "s/http:\/\/security.ubuntu.com/http:\/\/mirrors.ustc.edu.cn\/ubuntu-old-releases/g" /etc/apt/sources.list && \
+    dpkg --add-architecture i386 && \
+    apt-get update && apt-get -y dist-upgrade && \
+    apt-get install -y ssh python3 libc6-dbg lib32z1 libc-dbg:i386
+RUN sed -i -e 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config && \
+    sed -i -e 's/#PermitEmptyPasswords no/PermitEmptyPasswords yes/g' /etc/ssh/sshd_config && \
+    sed -i -e 's/nullok_secure/nullok/' /etc/pam.d/common-auth && \
+    passwd -d root && \
+    mkdir /var/run/sshd && \
+    ln -s /usr/bin/python3 /usr/bin/python
