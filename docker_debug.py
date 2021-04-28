@@ -46,7 +46,7 @@ class DockerDebug():
             else:
                 raise TypeError('remote_host must be str')
             # if using remote docker, start port forwarding
-            ip = '127.0.0.1'
+            ssh_ip = '127.0.0.1'
             log.info("Wait port forwarding from {}...".format(self.remote_host))
             task = asyncio.run_coroutine_threadsafe(self.__ssh_forward(self.remote_host), event_loop)
             while self.__unix_listener is None:
@@ -60,14 +60,15 @@ class DockerDebug():
             
         else:
             docker_client = docker.from_env()
-            ip = docker_client.api.inspect_container(container_name)['NetworkSettings']['Networks']['pwn-environment']['IPAddress']
+            self.docker_ip = docker_client.api.inspect_container(container_name)['NetworkSettings']['Networks']['pwn-environment']['IPAddress']
+            ssh_ip = self.docker_ip
             docker_client.close()
 
         try:
-            self.docker_shell = pwnlib.tubes.ssh.ssh('root', ip, self.ssh_port, password='')
+            self.docker_shell = pwnlib.tubes.ssh.ssh('root', ssh_ip, self.ssh_port, password='')
         except paramiko.BadHostKeyException:
-            os.system('ssh-keygen -f "${{HOME}}/.ssh/known_hosts" -R "{}"'.format(ip))
-            self.docker_shell = pwnlib.tubes.ssh.ssh('root', ip, password='')
+            os.system('ssh-keygen -f "${{HOME}}/.ssh/known_hosts" -R "{}"'.format(ssh_ip))
+            self.docker_shell = pwnlib.tubes.ssh.ssh('root', ssh_ip, password='')
         self.docker_shell.set_working_directory(b'/binary')
 
 
