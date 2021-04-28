@@ -22,14 +22,14 @@ services:
             - 22
             - 50818
 
-    pwn-ubuntu-1804:
-        container_name: pwn-environment-ubuntu-1804
+    pwn-ubuntu-1610:
+        container_name: pwn-environment-ubuntu-1610
         restart: always
-        image: pwn-environment:ubuntu-1804
+        image: pwn-environment:ubuntu-1610
         init: true
         build:
             context: ./dockerfiles
-            dockerfile: dockerfile-ubuntu1804
+            dockerfile: dockerfile-ubuntu1610
         volumes:
             - ./binary:/binary
         entrypoint:
@@ -66,6 +66,72 @@ services:
             - 22
             - 50818
 
+    pwn-ubuntu-1710:
+        container_name: pwn-environment-ubuntu-1710
+        restart: always
+        image: pwn-environment:ubuntu-1710
+        init: true
+        build:
+            context: ./dockerfiles
+            dockerfile: dockerfile-ubuntu1710
+        volumes:
+            - ./binary:/binary
+        entrypoint:
+            - /bin/bash
+            - -c
+            - /usr/sbin/sshd && /binary/gdbserver --multi 0.0.0.0:50818
+        cap_add:
+            - sys_ptrace
+        security_opt:
+            - seccomp="enable-personality.json"
+        expose:
+            - 22
+            - 50818
+
+    pwn-ubuntu-1804:
+        container_name: pwn-environment-ubuntu-1804
+        restart: always
+        image: pwn-environment:ubuntu-1804
+        init: true
+        build:
+            context: ./dockerfiles
+            dockerfile: dockerfile-ubuntu1804
+        volumes:
+            - ./binary:/binary
+        entrypoint:
+            - /bin/bash
+            - -c
+            - /usr/sbin/sshd && /binary/gdbserver --multi 0.0.0.0:50818
+        cap_add:
+            - sys_ptrace
+        security_opt:
+            - seccomp="enable-personality.json"
+        expose:
+            - 22
+            - 50818
+
+    pwn-ubuntu-1810:
+        container_name: pwn-environment-ubuntu-1810
+        restart: always
+        image: pwn-environment:ubuntu-1810
+        init: true
+        build:
+            context: ./dockerfiles
+            dockerfile: dockerfile-ubuntu1810
+        volumes:
+            - ./binary:/binary
+        entrypoint:
+            - /bin/bash
+            - -c
+            - /usr/sbin/sshd && /binary/gdbserver --multi 0.0.0.0:50818
+        cap_add:
+            - sys_ptrace
+        security_opt:
+            - seccomp="enable-personality.json"
+        expose:
+            - 22
+            - 50818
+
     pwn-ubuntu-1904:
         container_name: pwn-environment-ubuntu-1904
         restart: always
@@ -88,6 +154,72 @@ services:
             - 22
             - 50818
 
+    pwn-ubuntu-1910:
+        container_name: pwn-environment-ubuntu-1910
+        restart: always
+        image: pwn-environment:ubuntu-1910
+        init: true
+        build:
+            context: ./dockerfiles
+            dockerfile: dockerfile-ubuntu1910
+        volumes:
+            - ./binary:/binary
+        entrypoint:
+            - /bin/bash
+            - -c
+            - /usr/sbin/sshd && /binary/gdbserver --multi 0.0.0.0:50818
+        cap_add:
+            - sys_ptrace
+        security_opt:
+            - seccomp="enable-personality.json"
+        expose:
+            - 22
+            - 50818
+
+    pwn-ubuntu-2004:
+        container_name: pwn-environment-ubuntu-2004
+        restart: always
+        image: pwn-environment:ubuntu-2004
+        init: true
+        build:
+            context: ./dockerfiles
+            dockerfile: dockerfile-ubuntu2004
+        volumes:
+            - ./binary:/binary
+        entrypoint:
+            - /bin/bash
+            - -c
+            - /usr/sbin/sshd && /binary/gdbserver --multi 0.0.0.0:50818
+        cap_add:
+            - sys_ptrace
+        security_opt:
+            - seccomp="enable-personality.json"
+        expose:
+            - 22
+            - 50818
+    
+    pwn-ubuntu-2010:
+        container_name: pwn-environment-ubuntu-2010
+        restart: always
+        image: pwn-environment:ubuntu-2010
+        init: true
+        build:
+            context: ./dockerfiles
+            dockerfile: dockerfile-ubuntu2010
+        volumes:
+            - ./binary:/binary
+        entrypoint:
+            - /bin/bash
+            - -c
+            - /usr/sbin/sshd && /binary/gdbserver --multi 0.0.0.0:50818
+        cap_add:
+            - sys_ptrace
+        security_opt:
+            - seccomp="enable-personality.json"
+        expose:
+            - 22
+            - 50818
+    
 networks:
     default:
         driver: bridge
