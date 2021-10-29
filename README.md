@@ -33,7 +33,7 @@ The docker image will take up very little space.
 3. Install requirements:
 
    ```bash
-   pip3 install docker pwntools asyncssh --user
+   pip3 install pwntools --user
    ```
 
 4. Install pwn-docker-environment.
@@ -52,69 +52,22 @@ The docker image will take up very little space.
    ```
    ![3.png](readme/3.png)
 
-### WSL1 or local machine that cannot run docker
-
-It also can be used to connect server's docker, but the debugging experience is not good.
-
-#### In server:
-
-1. Install docker and docker-compose
-
-2. Add your user to docker group.
-
-3. Install pwn-docker-environment.
-
-   ```bash
-   git clone https://github.com/plusls/pwn-docker-environment.git
-   cd pwn-docker-environment
-   docker-compose up -d
-   ```
-
-4. Use Public Key Authentication with SSH (Login without password)
-
-#### In WSL1
-
-1. Install  pwndbg
-
-2. Add your user to docker group.
-
-3. Install requirements:
-
-   ```bash
-   pip3 install docker pwntools asyncssh --user
-   ```
-
-4. Install pwn-docker-environment.
-
-   ```bash
-   git clone https://github.com/plusls/pwn-docker-environment.git
-   cd pwn-docker-environment
-   ```
-
-5. Run test script
-
-   ```bash
-   cd binary
-   python3 wsltest.py
-   ```
-
-   ![4.png](readme/4.png)
 
 ### Tips
 
-1. Can link `docker_debug.py` to `~/.local/lib/{python_version}/site-packages/docker_debug.py`
+1. You can link `docker_debug.py` to `~/.local/lib/{python_version}/site-packages/docker_debug.py`
 
    ```bash
-   ln -s ~/docker/pwn-docker-environment/docker_debug.py ./
+   ln -s ~/pwn-docker-environment/docker_debug.py ~/.local/lib/{python_version}/site-packages/docker_debug.py
    ```
 
-2. Can add `cp-pwn` script to `~/.local/bin` to quick copy binary to docker
+2. You can add `cp-pwn` script to `~/.local/bin` to quick copy binary to docker
 
    example:
 
    ```bash
    #!/bin/bash
-   cp -r $1 ~/docker/pwn-docker-environment/binary/.
+   cp -r $1 ~/pwn-docker-environment/binary/.
    ```
 
    You can use it like this:
@@ -123,3 +76,18 @@ It also can be used to connect server's docker, but the debugging experience is 
    cp-pwn ./mybinary
    ```
    
+   You also can add alias in `.bashrc`
+
+   ```bash
+   alias cp-pwn='_cp_pwn(){ if [ ! -n "$1" ] ;then echo "cp-pwn <filename>";else cp -r $1 ${HOME}/pwn-docker-environment/binary/.; fi}; _cp_pwn'
+   ```
+
+3. When use windows terminal with wsl2, you can add config to `~/.config/pwn.conf`
+
+```
+[context]
+terminal=['wt.exe', '-w', '0', 'split-pane', 'wsl.exe', '-e']
+
+[update]
+interval=never
+```

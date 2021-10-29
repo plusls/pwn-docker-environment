@@ -2,224 +2,305 @@ version: '3.8'
 services:
     pwn-ubuntu-1604:
         container_name: pwn-environment-ubuntu-1604
+        hostname: pwn-environment-ubuntu-1604
         restart: always
         image: pwn-environment:ubuntu-1604
         init: true
         build:
             context: ./dockerfiles
-            dockerfile: dockerfile-ubuntu1604
+            dockerfile: dockerfile-ubuntu-1604
         volumes:
             - ./binary:/binary
         entrypoint:
             - /bin/bash
             - -c
-            - /usr/sbin/sshd && /binary/gdbserver --multi 0.0.0.0:50818
+            - socat unix-listen:/binary/socket/$${HOSTNAME}-gdbserver,mode=777,unlink-early,fork tcp-connect:localhost:50818 &
+              /binary/gdbserver --multi 127.0.0.1:50818 &
+              socat unix-listen:/binary/socket/$${HOSTNAME}-ssh,mode=777,unlink-early,fork tcp-connect:localhost:22 &
+              /usr/sbin/sshd -D
         cap_add:
             - sys_ptrace
         security_opt:
-            - seccomp="enable-personality.json"
+            - seccomp=enable-personality.json
         expose:
             - 22
-            - 50818
 
     pwn-ubuntu-1610:
         container_name: pwn-environment-ubuntu-1610
+        hostname: pwn-environment-ubuntu-1610
         restart: always
         image: pwn-environment:ubuntu-1610
         init: true
         build:
             context: ./dockerfiles
-            dockerfile: dockerfile-ubuntu1610
+            dockerfile: dockerfile-ubuntu-1610
         volumes:
             - ./binary:/binary
         entrypoint:
             - /bin/bash
             - -c
-            - /usr/sbin/sshd && /binary/gdbserver --multi 0.0.0.0:50818
+            - socat unix-listen:/binary/socket/$${HOSTNAME}-gdbserver,mode=777,unlink-early,fork tcp-connect:localhost:50818 &
+              /binary/gdbserver --multi 127.0.0.1:50818 &
+              socat unix-listen:/binary/socket/$${HOSTNAME}-ssh,mode=777,unlink-early,fork tcp-connect:localhost:22 &
+              /usr/sbin/sshd -D
         cap_add:
             - sys_ptrace
         security_opt:
-            - seccomp="enable-personality.json"
+            - seccomp=enable-personality.json
         expose:
             - 22
-            - 50818
 
     pwn-ubuntu-1704:
         container_name: pwn-environment-ubuntu-1704
+        hostname: pwn-environment-ubuntu-1704
         restart: always
         image: pwn-environment:ubuntu-1704
         init: true
         build:
             context: ./dockerfiles
-            dockerfile: dockerfile-ubuntu1704
+            dockerfile: dockerfile-ubuntu-1704
         volumes:
             - ./binary:/binary
         entrypoint:
             - /bin/bash
             - -c
-            - /usr/sbin/sshd && /binary/gdbserver --multi 0.0.0.0:50818
+            - socat unix-listen:/binary/socket/$${HOSTNAME}-gdbserver,mode=777,unlink-early,fork tcp-connect:localhost:50818 &
+              /binary/gdbserver --multi 127.0.0.1:50818 &
+              socat unix-listen:/binary/socket/$${HOSTNAME}-ssh,mode=777,unlink-early,fork tcp-connect:localhost:22 &
+              /usr/sbin/sshd -D
         cap_add:
             - sys_ptrace
         security_opt:
-            - seccomp="enable-personality.json"
+            - seccomp=enable-personality.json
         expose:
             - 22
-            - 50818
 
     pwn-ubuntu-1710:
         container_name: pwn-environment-ubuntu-1710
+        hostname: pwn-environment-ubuntu-1710
         restart: always
         image: pwn-environment:ubuntu-1710
         init: true
         build:
             context: ./dockerfiles
-            dockerfile: dockerfile-ubuntu1710
+            dockerfile: dockerfile-ubuntu-1710
         volumes:
             - ./binary:/binary
         entrypoint:
             - /bin/bash
             - -c
-            - /usr/sbin/sshd && /binary/gdbserver --multi 0.0.0.0:50818
+            - socat unix-listen:/binary/socket/$${HOSTNAME}-gdbserver,mode=777,unlink-early,fork tcp-connect:localhost:50818 &
+              /binary/gdbserver --multi 127.0.0.1:50818 &
+              socat unix-listen:/binary/socket/$${HOSTNAME}-ssh,mode=777,unlink-early,fork tcp-connect:localhost:22 &
+              /usr/sbin/sshd -D
         cap_add:
             - sys_ptrace
         security_opt:
-            - seccomp="enable-personality.json"
+            - seccomp=enable-personality.json
         expose:
             - 22
-            - 50818
 
     pwn-ubuntu-1804:
         container_name: pwn-environment-ubuntu-1804
+        hostname: pwn-environment-ubuntu-1804
         restart: always
         image: pwn-environment:ubuntu-1804
         init: true
         build:
             context: ./dockerfiles
-            dockerfile: dockerfile-ubuntu1804
+            dockerfile: dockerfile-ubuntu-1804
         volumes:
             - ./binary:/binary
         entrypoint:
             - /bin/bash
             - -c
-            - /usr/sbin/sshd && /binary/gdbserver --multi 0.0.0.0:50818
+            - socat unix-listen:/binary/socket/$${HOSTNAME}-gdbserver,mode=777,unlink-early,fork tcp-connect:localhost:50818 &
+              /binary/gdbserver --multi 127.0.0.1:50818 &
+              socat unix-listen:/binary/socket/$${HOSTNAME}-ssh,mode=777,unlink-early,fork tcp-connect:localhost:22 &
+              /usr/sbin/sshd -D
         cap_add:
             - sys_ptrace
         security_opt:
-            - seccomp="enable-personality.json"
+            - seccomp=enable-personality.json
         expose:
             - 22
-            - 50818
 
     pwn-ubuntu-1810:
         container_name: pwn-environment-ubuntu-1810
+        hostname: pwn-environment-ubuntu-1810
         restart: always
         image: pwn-environment:ubuntu-1810
         init: true
         build:
             context: ./dockerfiles
-            dockerfile: dockerfile-ubuntu1810
+            dockerfile: dockerfile-ubuntu-1810
         volumes:
             - ./binary:/binary
         entrypoint:
             - /bin/bash
             - -c
-            - /usr/sbin/sshd && /binary/gdbserver --multi 0.0.0.0:50818
+            - socat unix-listen:/binary/socket/$${HOSTNAME}-gdbserver,mode=777,unlink-early,fork tcp-connect:localhost:50818 &
+              /binary/gdbserver --multi 127.0.0.1:50818 &
+              socat unix-listen:/binary/socket/$${HOSTNAME}-ssh,mode=777,unlink-early,fork tcp-connect:localhost:22 &
+              /usr/sbin/sshd -D
         cap_add:
             - sys_ptrace
         security_opt:
-            - seccomp="enable-personality.json"
+            - seccomp=enable-personality.json
         expose:
             - 22
-            - 50818
 
     pwn-ubuntu-1904:
         container_name: pwn-environment-ubuntu-1904
+        hostname: pwn-environment-ubuntu-1904
         restart: always
         image: pwn-environment:ubuntu-1904
         init: true
         build:
             context: ./dockerfiles
-            dockerfile: dockerfile-ubuntu1904
+            dockerfile: dockerfile-ubuntu-1904
         volumes:
             - ./binary:/binary
         entrypoint:
             - /bin/bash
             - -c
-            - /usr/sbin/sshd && /binary/gdbserver --multi 0.0.0.0:50818
+            - socat unix-listen:/binary/socket/$${HOSTNAME}-gdbserver,mode=777,unlink-early,fork tcp-connect:localhost:50818 &
+              /binary/gdbserver --multi 127.0.0.1:50818 &
+              socat unix-listen:/binary/socket/$${HOSTNAME}-ssh,mode=777,unlink-early,fork tcp-connect:localhost:22 &
+              /usr/sbin/sshd -D
         cap_add:
             - sys_ptrace
         security_opt:
-            - seccomp="enable-personality.json"
+            - seccomp=enable-personality.json
         expose:
             - 22
-            - 50818
 
     pwn-ubuntu-1910:
         container_name: pwn-environment-ubuntu-1910
+        hostname: pwn-environment-ubuntu-1910
         restart: always
         image: pwn-environment:ubuntu-1910
         init: true
         build:
             context: ./dockerfiles
-            dockerfile: dockerfile-ubuntu1910
+            dockerfile: dockerfile-ubuntu-1910
         volumes:
             - ./binary:/binary
         entrypoint:
             - /bin/bash
             - -c
-            - /usr/sbin/sshd && /binary/gdbserver --multi 0.0.0.0:50818
+            - socat unix-listen:/binary/socket/$${HOSTNAME}-gdbserver,mode=777,unlink-early,fork tcp-connect:localhost:50818 &
+              /binary/gdbserver --multi 127.0.0.1:50818 &
+              socat unix-listen:/binary/socket/$${HOSTNAME}-ssh,mode=777,unlink-early,fork tcp-connect:localhost:22 &
+              /usr/sbin/sshd -D
         cap_add:
             - sys_ptrace
         security_opt:
-            - seccomp="enable-personality.json"
+            - seccomp=enable-personality.json
         expose:
             - 22
-            - 50818
 
     pwn-ubuntu-2004:
         container_name: pwn-environment-ubuntu-2004
+        hostname: pwn-environment-ubuntu-2004
         restart: always
         image: pwn-environment:ubuntu-2004
         init: true
         build:
             context: ./dockerfiles
-            dockerfile: dockerfile-ubuntu2004
+            dockerfile: dockerfile-ubuntu-2004
         volumes:
             - ./binary:/binary
         entrypoint:
             - /bin/bash
             - -c
-            - /usr/sbin/sshd && /binary/gdbserver --multi 0.0.0.0:50818
+            - socat unix-listen:/binary/socket/$${HOSTNAME}-gdbserver,mode=777,unlink-early,fork tcp-connect:localhost:50818 &
+              /binary/gdbserver --multi 127.0.0.1:50818 &
+              socat unix-listen:/binary/socket/$${HOSTNAME}-ssh,mode=777,unlink-early,fork tcp-connect:localhost:22 &
+              /usr/sbin/sshd -D
         cap_add:
             - sys_ptrace
         security_opt:
-            - seccomp="enable-personality.json"
+            - seccomp=enable-personality.json
         expose:
             - 22
-            - 50818
     
     pwn-ubuntu-2010:
         container_name: pwn-environment-ubuntu-2010
+        hostname: pwn-environment-ubuntu-2010
         restart: always
         image: pwn-environment:ubuntu-2010
         init: true
         build:
             context: ./dockerfiles
-            dockerfile: dockerfile-ubuntu2010
+            dockerfile: dockerfile-ubuntu-2010
         volumes:
             - ./binary:/binary
         entrypoint:
             - /bin/bash
             - -c
-            - /usr/sbin/sshd && /binary/gdbserver --multi 0.0.0.0:50818
+            - socat unix-listen:/binary/socket/$${HOSTNAME}-gdbserver,mode=777,unlink-early,fork tcp-connect:localhost:50818 &
+              /binary/gdbserver --multi 127.0.0.1:50818 &
+              socat unix-listen:/binary/socket/$${HOSTNAME}-ssh,mode=777,unlink-early,fork tcp-connect:localhost:22 &
+              /usr/sbin/sshd -D
         cap_add:
             - sys_ptrace
         security_opt:
-            - seccomp="enable-personality.json"
+            - seccomp=enable-personality.json
         expose:
             - 22
-            - 50818
     
+    pwn-ubuntu-2104:
+        container_name: pwn-environment-ubuntu-2104
+        hostname: pwn-environment-ubuntu-2104
+        restart: always
+        image: pwn-environment:ubuntu-2104
+        init: true
+        build:
+            context: ./dockerfiles
+            dockerfile: dockerfile-ubuntu-2104
+        volumes:
+            - ./binary:/binary
+        entrypoint:
+            - /bin/bash
+            - -c
+            - socat unix-listen:/binary/socket/$${HOSTNAME}-gdbserver,mode=777,unlink-early,fork tcp-connect:localhost:50818 &
+              /binary/gdbserver --multi 127.0.0.1:50818 &
+              socat unix-listen:/binary/socket/$${HOSTNAME}-ssh,mode=777,unlink-early,fork tcp-connect:localhost:22 &
+              /usr/sbin/sshd -D
+        cap_add:
+            - sys_ptrace
+        security_opt:
+            - seccomp=enable-personality.json
+        expose:
+            - 22
+
+    pwn-ubuntu-2110:
+        container_name: pwn-environment-ubuntu-2110
+        hostname: pwn-environment-ubuntu-2110
+        restart: always
+        image: pwn-environment:ubuntu-2110
+        init: true
+        build:
+            context: ./dockerfiles
+            dockerfile: dockerfile-ubuntu-2110
+        volumes:
+            - ./binary:/binary
+        entrypoint:
+            - /bin/bash
+            - -c
+            - socat unix-listen:/binary/socket/$${HOSTNAME}-gdbserver,mode=777,unlink-early,fork tcp-connect:localhost:50818 &
+              /binary/gdbserver --multi 127.0.0.1:50818 &
+              socat unix-listen:/binary/socket/$${HOSTNAME}-ssh,mode=777,unlink-early,fork tcp-connect:localhost:22 &
+              /usr/sbin/sshd -D
+        cap_add:
+            - sys_ptrace
+        security_opt:
+            - seccomp=enable-personality.json
+        expose:
+            - 22
+
+
 networks:
     default:
         driver: bridge
