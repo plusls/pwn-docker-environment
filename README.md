@@ -50,7 +50,16 @@ The docker image will take up very little space.
    cd binary
    python3 test.py
    ```
-   ![3.png](readme/3.png)
+
+### Screenshot
+
+1. wsl2 + tmux
+
+    ![3.png](readme/3.png)
+
+2. wsl2 + windows terminal
+
+    ![windows-terminal.jpg](readme/windows-terminal.jpg)
 
 
 ### Tips
@@ -84,10 +93,20 @@ The docker image will take up very little space.
 
 3. When use windows terminal with wsl2, you can add config to `~/.config/pwn.conf`
 
-```
-[context]
-terminal=['wt.exe', '-w', '0', 'split-pane', 'wsl.exe', '-e']
+    ```
+    [context]
+    terminal=['wt.exe', '-w', '0', 'split-pane', 'wsl.exe', '-e']
 
-[update]
-interval=never
-```
+    [update]
+    interval=never
+    ```
+
+3. When use tmux, you can add config to `~/.config/pwn.conf`
+
+    ```
+    [context]
+    terminal=['tmux', 'splitw', '-h']
+
+    [update]
+    interval=never
+    ```
